@@ -19,7 +19,7 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-origins = ['https://localhost:3000','https://localhost:3000/signup']
+origins = ["http://localhost:3000/login","http://localhost:3000/signup","http://localhost:3000"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -39,12 +39,14 @@ def get_db():
 
 
 @app.get("/users", response_model=List[UserSchema])
-def get_users(db:Session=Depends(get_db)):
+async def get_users(db:Session=Depends(get_db)):
     return db.query(Users).all()
+    
 
 @app.get("/users/{id}")
-def get_users_by_id(id:int, db:Session=Depends(get_db)):
+async def get_users_by_id(id:int, db:Session=Depends(get_db)):
     return db.execute("SELECT * FROM users WHERE id = %s" %id).fetchall()
+
 
 @app.post("/users", response_model=UserSchema)
 def input_users(user: UserSchema, db:Session=Depends(get_db)):
@@ -62,12 +64,8 @@ def input_users(user: UserSchema, db:Session=Depends(get_db)):
     db.commit()
     return u
 
-# @app.post("/users", response_model=UserSchema)
-# def input_users(user: UserSchema):
-#     return user
-
 @app.post("/users/login")
-def user_login(login: UserLogin,db:Session=Depends(get_db)):
+async def user_login(login: UserLogin,db:Session=Depends(get_db)):
     login = Users(
         email = login.email,
         password = login.password
@@ -82,9 +80,11 @@ def user_login(login: UserLogin,db:Session=Depends(get_db)):
         )
         db.add(input)
         db.commit()
+        print('test')
+        print(db.query(AlatVerified).all())
         return db.query(AlatVerified).all()
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='127.0.0.1', port=8080)
+    uvicorn.run(app, host='127.0.0.1', port=8000)
 
