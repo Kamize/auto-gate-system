@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  User_Id String @id @default(cuid())
+  Nama_Depan String 
+  Nama_Belakang String
+  birthdate DateTime @db.Date
+  gender Boolean
+  Foto String?
+  Nomor_Telepon String //unique
+  Email String //unique
+  Password String 
+  Username String //unique
+  Verifikasi_Masker Verifikasi_Masker?
+
+  
+
+}
+
+model Verifikasi_Masker{
+  Verified_Id String @id @default(cuid())
+  User_Id String @unique
+  User User? @relation(fields: [User_Id], references: [User_Id])
+  Data_Harian Data_Harian[]
+}
+
+model Security{
+  Security_Id String @id @default(cuid())
+}
+
+model DataScientist{
+  DataScientist_Id String @id @default(cuid())
+}
+
+model Data_Harian{
+  dataHarian_Id String @id @default(cuid())
+  Verified_Id String
+  Verified Verifikasi_Masker? @relation(fields: [Verified_Id],references: [Verified_Id])
+  Jumlah Int
+  Statistik_Periodik Statistik_Periodik[]
+}
+
+model Statistik_Periodik{
+  Statistik_Id String @id @default(cuid())
+  dataHarian_Id String
+  dataHarian Data_Harian? @relation(fields: [dataHarian_Id],references: [dataHarian_Id])
+}
+
+
+
+
+

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/router";
 
 export default function SignUp() {
   const schema = yup
@@ -21,11 +22,15 @@ export default function SignUp() {
     })
     .required();
 
-  const { register, handleSubmit, formState:{errors} } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const posts = {namadepan:'opal',namabelakang:'nopal'}
+  const router = useRouter()
 
   return (
     <section className=" flex items-center justify-center absolute left-0 right-0 top-0 bottom-0 ">
@@ -33,11 +38,13 @@ export default function SignUp() {
         <form
           id="form1"
           onSubmit={handleSubmit((d) => {
-                axios.post("http://127.0.0.1:8000/users",d)
-                .then(data => console.log(data))
-                // console.log(d)
-            }
-          )}
+            axios.post("http://127.0.0.1:8000/users",d)
+                .then(data => router.push("/login"))
+            //     .catch(e => console.log(e))
+            // router.push("/login")
+            console.log(d);
+            // console.log(errors);
+          })}
         >
           <div className="relative mb-[14px]">
             <p className=" text-[12px] absolute -top-[10px] left-[26px] px-1 bg-white">First Name</p>
@@ -54,7 +61,7 @@ export default function SignUp() {
           </div>
           <div className="relative mb-[14px]">
             <p className=" ">gender</p>
-            <input type={"radio"} {...register("gender")} placeholder="password" className=" inline-block w-[50px] h-[50px]" />
+            <input type={"radio"} {...register("gender")} value={true} placeholder="password" className=" inline-block w-[50px] h-[50px]" />
             <input type={"radio"} {...register("gender")} value={false} placeholder="password" className=" inline-block w-[50px] h-[50px]" />
           </div>
           <div className="relative mb-[14px]">

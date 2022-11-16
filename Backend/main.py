@@ -41,6 +41,10 @@ def get_db():
 @app.get("/users", response_model=List[UserSchema])
 async def get_users(db:Session=Depends(get_db)):
     return db.query(Users).all()
+
+@app.get("/users/total")
+async def get_total_users(db:Session=Depends(get_db)):
+    return db.execute("SELECT COUNT(id) as 'jumlah' FROM users").all()
     
 
 @app.get("/users/{id}")
