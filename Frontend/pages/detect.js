@@ -3,22 +3,24 @@ import { useRef } from "react";
 import { useEffect, useState } from "react";
 
 function App() {
-  const [result, setResult] = useState({});
-  // console.log(videoRef)
-  // const [labelBool,setLabel] = useState(false)
-  let videoRef = useRef();
-  const imgURL = "https://teachablemachine.withgoogle.com/models/f3rdJMbyh/model.json";
-  useEffect(() => {
-    const ml5 = require("ml5");
-    let detectInterval;
+  const [result, setResult] = useState([]);
 
-    const modelLoaded = () => {
-      // videoRef.current.video;
-      detectInterval = setInterval(() => {
-        detect();
-      }, 2000);
-    };
-    const classifier = ml5.imageClassifier(imgURL, modelLoaded);
+  let videoRef = useRef();
+  let refButton = useRef();
+  const imgURL = "https://teachablemachine.withgoogle.com/models/f3rdJMbyh/model.json";
+
+    let detectInterval;
+    useEffect(() => {
+      const ml5 = require("ml5");
+      const modelLoaded = () => {
+        // videoRef.current.video;
+        console.log('model ready')
+        // detectInterval = setInterval(() => {
+          refButton.current.onclick = () => detect()
+        
+          // }, 1000);
+        };
+        const classifier = ml5.imageClassifier(imgURL, modelLoaded);
 
     // Start image classification
 
@@ -29,8 +31,6 @@ function App() {
           return;
         }
         setResult(results[0]);
-        console.log(results);
-        // console.log(results[0]);
       });
     };
 
@@ -40,12 +40,13 @@ function App() {
       }
     };
   },[]);
+  console.log(result)
 
   return (
     <div>
       <Webcam ref={videoRef} mirrored={true} style={{ display: "block" }} width={500} height={400} audio={false} video={"true"} />
-      <button style={{ display: "block" }}>CLASSIFY</button>
-      {result.label && <p>{result.label + " " + result.confidence}</p>}
+      <button ref={refButton}>CLASSIFY</button>
+      {result.label && <p>{result.label}</p>}
     </div>
   );
 }
