@@ -1,5 +1,5 @@
 from database import Base
-from sqlalchemy import Column, Integer, String, CHAR, DateTime, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Date
 
 from sqlalchemy.orm import relationship
 
@@ -18,6 +18,7 @@ class Users(Base):
     password = Column(String(40))
 
     verified = relationship("AlatVerified", back_populates="pengunjung")
+    harian = relationship("DataHarian", back_populates="pengunjungvisitor")
 
 class AlatVerified(Base):
     __tablename__="alatverified"
@@ -28,3 +29,16 @@ class AlatVerified(Base):
     masker = Column(Boolean)
 
     pengunjung = relationship("Users", back_populates="verified")
+    pengunjungharian = relationship("DataHarian", back_populates="scanvisitor")
+
+class DataHarian(Base):
+    __tablename__="dataharian"
+
+    dataharian_id = Column(Integer, primary_key=True, autoincrement=True)
+    scan_id = Column(Integer, ForeignKey("alatverified.scan_id"))
+    user_id = Column(Integer, ForeignKey("users.id"))
+    input_at = Column(Date)
+
+    scanvisitor = relationship("AlatVerified", back_populates="pengunjungharian")
+    pengunjungvisitor = relationship("Users", back_populates="harian")
+

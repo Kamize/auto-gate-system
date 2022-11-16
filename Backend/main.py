@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, Request
 from database import Base, SessionLocal, engine
-from models import Users, AlatVerified
+from models import Users, AlatVerified, DataHarian
 from sqlalchemy.orm import Session
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
@@ -80,9 +80,23 @@ async def user_login(login: UserLogin,db:Session=Depends(get_db)):
         )
         db.add(input)
         db.commit()
-        print('test')
-        print(db.query(AlatVerified).all())
-        return db.query(AlatVerified).all()
+        get_scan_id = db.execute("SELECT scan_id FROM alatverified WHERE user_id = %d ORDER BY scan_id DESC" %i).fetchone()
+        for j in get_scan_id:
+            db.execute("INSERT INTO dataharian VALUES (null, %d, %d, '%s')" %(j, i, datenow))
+            db.commit()
+            return j, i, datenow
+
+@app.get("/dataharian")
+async def get_dataharian(db:Session=Depends(get_db)):
+    return db.execute("SELECT dataharian.dataharian_id, users.namadepan, users.namabelakang, users.email, dataharian.input_at FROM users INNER JOIN dataharian ON users.id = dataharian.dataharian_id").fetchall()
+
+@app.get("/dataharian/{tanggal}/users")
+async def get_dataharian(tanggal: str,db:Session=Depends(get_db)):
+    return db.execute("SELECT dataharian.dataharian_id, users.namadepan, users.namabelakang, users.email, dataharian.input_at FROM users INNER JOIN dataharian ON users.id = dataharian.dataharian_id WHERE dataharian.input_at = '%s';" %tanggal).fetchall()
+    
+@app.get("/dataharian/{tanggal}/jumlah")
+async def get_dataharian(tanggal:str, db:Session=Depends(get_db)):
+    return db.execute("SELECT COUNT(user_id) as 'Jumlah' FROM dataharian WHERE input_at = '%s'" %tanggal).fetchall()
 
 
 if __name__ == '__main__':
