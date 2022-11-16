@@ -70,18 +70,17 @@ def input_users(user: UserSchema, db:Session=Depends(get_db)):
 
 @app.post("/users/login")
 async def user_login(login: UserLogin,db:Session=Depends(get_db)):
-    login = Users(
-        email = login.email,
-        password = login.password,
-        masker = login.masker,
-    )
+    # login = Users(
+    #     email = login.email,
+    #     password = login.password,
+    # )
     datenow = datetime.datetime.now()
     hasil = db.execute("SELECT id FROM users WHERE email = '%s' and password = '%s' " %(login.email, login.password)).fetchone()
     for i in hasil:
         input = AlatVerified(
             user_id = i,
             login_at = datenow,
-            masker = True,
+            masker = login.masker,
         )
         db.add(input)
         db.commit()
