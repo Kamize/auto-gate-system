@@ -1,5 +1,5 @@
 export default function Tables({data}) {
-  console.log(data)
+  // console.log(data)
   return (
     <>
       <div className="overflow-x-auto relative shadow-md ">
@@ -25,7 +25,7 @@ export default function Tables({data}) {
           </thead>
           <tbody>
           {/* data[1].data[0].jumlah */}
-            {data && data[0].data.map((obj,index) => {
+            {data && data.data.map((obj,index) => {
               return (
                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -34,11 +34,6 @@ export default function Tables({data}) {
                   <td className="py-4 px-6">{obj.email}</td>
                   <td className="py-4 px-6">{obj.birthdate}</td>
                   <td className="py-4 px-6">{obj.nomor_telepon}</td>
-                  {/* <td className="py-4 px-6 text-right">
-                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                      Edit
-                    </a>
-                  </td> */}
                 </tr>
               )})}
           </tbody>

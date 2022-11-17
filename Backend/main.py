@@ -94,6 +94,9 @@ async def user_login(login: UserLogin,db:Session=Depends(get_db)):
                     db.execute("INSERT INTO dataharian VALUES (null, %d, %d, '%s')" %(j, i, datenow))
                     db.commit()
                     return db.execute("SELECT * FROM dataharian").all()
+                else:
+                    return "ANDA TIDAK DAPAT MASUK"
+
 
 @app.get("/dataharian")
 async def get_dataharian(db:Session=Depends(get_db)):

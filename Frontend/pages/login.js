@@ -3,6 +3,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Link from "next/link";
 
 export default function Login() {
   const schema = yup
@@ -31,15 +32,16 @@ export default function Login() {
         >
           <div className="relative mb-[14px]">
             <p className=" text-[12px] absolute -top-[10px] left-[26px] px-1 bg-white">Email</p>
-            <input {...register("email")} className=" rounded-[20px] border border-solid w-full h-[40px] border-[#6E7076] px-[34px] mb-[10px]" />
+            <input {...register("email")} className=" rounded-[20px] border border-solid w-full h-[40px] border-[#6E7076] px-[34px] mb-[10px]" placeholder="email" />
             <p>{errors.email?.message}</p>
           </div>
           <div className="relative mb-[14px]">
             <p className=" text-[12px] absolute -top-[10px] left-[26px] px-1 bg-white">Password</p>
-            <input {...register("password")} className=" rounded-[20px] border border-solid w-full h-[40px] border-[#6E7076] px-[34px] mb-[10px]" />
-            <p>{errors.Password?.message}</p>
+            <input {...register("password")} className=" rounded-[20px] border border-solid w-full h-[40px] border-[#6E7076] px-[34px] mb-[10px]" placeholder="password" />
+            <p>{errors.password?.message}</p>
           </div>
-          <input type="submit" className=" rounded-[20px] border-solid w-full h-[40px] bg-[#2CD5D9] px-[34px] mb-[10px] text-white" value={"next"} />
+          <input type="submit" className=" rounded-[20px] border-solid w-full h-[40px] bg-[#2CD5D9] px-[34px] mb-[10px] text-white" value={"Log In"} />
+            <Link href={"/signup"} ><p className="border border-[#2CD5D9] rounded-[20px] border-solid w-full h-[40px] bg-white px-[34px] mb-[10px] text-white grid place-content-center text-[#2CD5D9]">SignUp</p></Link>
         </form>
       </div>
     </section>
