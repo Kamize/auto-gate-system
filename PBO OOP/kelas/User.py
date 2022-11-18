@@ -6,7 +6,7 @@ from mysql.connector import Error
 import datetime
 from datetime import date
 
-from database.database import execute_querry, create_db_connection, getRole, getUserID
+from database.database import execute_querry, create_db_connection, getRole, getUserID, connection
 from database.secret import pw, db
 
 class User():
@@ -31,21 +31,11 @@ class User():
 		usernameuser = username
 		passworduser = password
 		connection = create_db_connection("localhost", "root", pw, db)
-		execute_querry(connection, "INSERT INTO user VALUES(null, '%s', '%s', '%s', %r, NULL, %s, '%s', '%s', '%s', 'security')" %(nama_depan, nama_belakang, birth_date, gender1, nomor_telepon, emailuser, usernameuser, passworduser))
+		execute_querry(connection, "INSERT INTO user VALUES(null, '%s', '%s', '%s', %r, NULL, %s, '%s', '%s', '%s', 'user')" %(nama_depan, nama_belakang, birth_date, gender1, nomor_telepon, emailuser, usernameuser, passworduser))
 
-	# def getUserID(connection, querry):
-	# 	cursor = connection.cursor()
-	# 	try:
-	# 		cursor.execute(querry)
-	# 		result = cursor.fetchone()
-	# 		return result
-	# 	except Error as err:
-	# 		print(f"Error : '{err}'") 
 
 	def userLogin(email, password):
 		datenow = datetime.datetime.now()
-		connection = create_db_connection("localhost", "root", pw, db)
-
 		emailuser = email
 		passworduser = password
 
@@ -57,43 +47,36 @@ class User():
 		else:
 			# print("Berhasil Log-in")
 			role = """
-			select role from user where email = '%s'
+			select role from user where email = '%s' and password = '%s'
 			"""
-			resultsRole = getRole(connection, role %email)
+			resultsRole = getRole(connection, role %(emailuser, passworduser))
 			for role in resultsRole:
 				if role == None:
 					print("User id Tidak ada")
 				elif role == 'security':
 					print("Anda masuk dengan akun security")
 				else:
-					getuser_id = """
-					select user_id from user where email = '%s'
-					"""
-					resultsID = getUserID(connection, getuser_id %email)
-					for user_id in resultsID:
+					resultsID = getUserID(connection, email, password)
+					for userid in resultsID:
 						masker = int(input("Apakah anda memakai masker : "))
-						if masker == 1:
-							inputverified = """
-							insert into alatverified values (null, '%d', '%s', '%d')
-							"""
-							execute_querry(connection, inputverified %(user_id, datenow, masker))
-							print("Anda bisa dengan akun user")
-
-							# inputdataharian = """
-							# select scan_id from verifiedmasker where user_id = '%s'
-							# """
-							# getVerID = getVerifiedID(connection, inputdataharian %user_id)
-							# for verID in getVerID:
-							# 	print("Berikut adalah ver id anda :", verID)
-								
-						else:
-							print("Anda tidak bisa masuk!")
+						inputverified = """
+						insert into alatverified values (null, '%d', '%s', '%d')
+						"""
+						execute_querry(connection, inputverified %(userid, datenow, masker))
+						print("Anda sudah masuk")
+					# for user_id in resultsID:
+					# 	masker = int(input("Apakah anda memakai masker : "))
+					# 	inputverified = """
+					# 	insert into alatverified values (null, '%d', '%s', '%d')
+					# 	"""
+					# 	execute_querry(connection, inputverified %(user_id, datenow, masker))	
+					# 	print("Anda sudah login")	
 					
 
-	def getUserID(connection, querry):
+	def getUserID(email, password):
 		cursor = connection.cursor()
 		try:
-			cursor.execute(querry)
+			cursor.execute("SELECT user_id from user where email = '%s' and password = '%s'" %(email, password))
 			result = cursor.fetchone()
 			return result
 		except Error as err:
@@ -108,10 +91,10 @@ class User():
 		except Error as err:
 			print(f"Error : '{err}'")
 
-	def getRole(connection, querry):
+	def getRole(connection, email, password):
 		cursor = connection.cursor()
 		try:
-			cursor.execute(querry)
+			cursor.execute("SELECT role from user where email = '%s' and password = '%s'" %(email, password))
 			result = cursor.fetchone()
 			return result
 		except Error as err:
@@ -140,85 +123,3 @@ class User():
 
 	def get_password(self):
 		return self.__password
-
-
-	# def userLogin(self):
-	# 	pass
-
-	# def inputUserBio(self):
-	# 	pass
-
-	# def updateUserBio(self):
-	# 	pass
-
-	# # @ParamType aUser_id int
-	# def setUser_id(self, aUser_id):
-	# 	self.___user_id = aUser_id
-
-	# # @ReturnType int
-	# def getUser_id(self):
-	# 	return self.___user_id
-
-	# # @ParamType aNama_depan string
-	# def setNama_depan(self, aNama_depan):
-	# 	self.___nama_depan = aNama_depan
-
-	# # @ReturnType string
-	# def getNama_depan(self):
-	# 	return self.___nama_depan
-
-	# # @ParamType aNama_belakang string
-	# def setNama_belakang(self, aNama_belakang):
-	# 	self.___nama_belakang = aNama_belakang
-
-	# # @ReturnType string
-	# def getNama_belakang(self):
-	# 	return self.___nama_belakang
-
-	# # @ParamType aBirthdate string
-	# def setBirthdate(self, aBirthdate):
-	# 	self.___birthdate = aBirthdate
-
-	# # @ReturnType string
-	# def getBirthdate(self):
-	# 	return self.___birthdate
-
-	# # @ParamType aGender boolean
-	# def setGender(self, aGender):
-	# 	self.___gender = aGender
-
-	# # @ReturnType boolean
-	# def isGender(self):
-	# 	return self.___gender
-
-	# # @ParamType aNomor_telepon string
-	# def setNomor_telepon(self, aNomor_telepon):
-	# 	self.___nomor_telepon = aNomor_telepon
-
-	# # @ReturnType string
-	# def getNomor_telepon(self):
-	# 	return self.___nomor_telepon
-
-	# # @ParamType aEmail string
-	# def setEmail(self, aEmail):
-	# 	self.___email = aEmail
-
-	# # @ReturnType string
-	# def getEmail(self):
-	# 	return self.___email
-
-	# # @ParamType aPassword string
-	# def setPassword(self, aPassword):
-	# 	self.___password = aPassword
-
-	# # @ReturnType string
-	# def getPassword(self):
-	# 	return self.___password
-
-	# # @ParamType aUsername string
-	# def setUsername(self, aUsername):
-	# 	self.___username = aUsername
-
-	# # @ReturnType string
-	# def getUsername(self):
-	# 	return self.___username

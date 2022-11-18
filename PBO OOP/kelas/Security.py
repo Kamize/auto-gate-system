@@ -1,9 +1,6 @@
 class Security(User):
-	# @AttributeType int
 	___security_id = None
-	# @AttributeType int
 	___user_id = None
-	# @AssociationType Data_Harian
 	___unnamed_Data_Harian_ = None
 
 	def checkCCTV(self):

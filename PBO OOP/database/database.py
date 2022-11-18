@@ -56,23 +56,23 @@ def execute_querry(connection, querry):
     except Error as err:
         print(f"Error : '{err}'")
 
-def getUserID(connection, querry):
+
+connection = create_db_connection("localhost", "root", pw, db)
+
+
+
+
+
+
+def getUserID(connection, email, password):
 		cursor = connection.cursor()
 		try:
-			cursor.execute(querry)
+			cursor.execute("SELECT user_id from user where email = '%s' and password = '%s'" %(email, password))
 			result = cursor.fetchone()
 			return result
 		except Error as err:
 			print(f"Error : '{err}'") 
 
-def getVerifiedID(connection, querry):
-    cursor = connection.cursor()
-    try:
-        cursor.execute(querry)
-        result = cursor.fetchone()
-        return result
-    except Error as err:
-        print(f"Error : '{err}'")
 
 def getRole(connection, querry):
     cursor = connection.cursor()
