@@ -6,7 +6,7 @@ from mysql.connector import Error
 import datetime
 from datetime import date
 
-from database.database import execute_querry, create_db_connection, getUserID, getVerifiedID
+from database.database import execute_querry, create_db_connection, getRole, getUserID
 from database.secret import pw, db
 
 class User():
@@ -31,7 +31,7 @@ class User():
 		usernameuser = username
 		passworduser = password
 		connection = create_db_connection("localhost", "root", pw, db)
-		execute_querry(connection, "INSERT INTO user VALUES(null, '%s', '%s', '%s', %r, NULL, %s, '%s', '%s', '%s')" %(nama_depan, nama_belakang, birth_date, gender1, nomor_telepon, emailuser, usernameuser, passworduser))
+		execute_querry(connection, "INSERT INTO user VALUES(null, '%s', '%s', '%s', %r, NULL, %s, '%s', '%s', '%s', 'security')" %(nama_depan, nama_belakang, birth_date, gender1, nomor_telepon, emailuser, usernameuser, passworduser))
 
 	# def getUserID(connection, querry):
 	# 	cursor = connection.cursor()
@@ -50,39 +50,72 @@ class User():
 		passworduser = password
 
 		cursor = connection.cursor()
-		cursor.execute("select email, password from user where email = '%s' and password = '%s'" %(emailuser, passworduser))
+		cursor.execute("select user_id from user where email = '%s' and password = '%s'" %(emailuser, passworduser))
 
 		if cursor.fetchone() == None:
 			print("Akun tidak ada")
 		else:
-			print("Berhasil Log-in")
-			id = """
-			select user_id from user where email = '%s'
+			# print("Berhasil Log-in")
+			role = """
+			select role from user where email = '%s'
 			"""
-			results = getUserID(connection, id %emailuser)
-			if results == None:
-				print("User id Tidak ada")
-			else:
-				for user_id in results:
-					masker = int(input("Apakah anda memakai masker : "))
-					if masker == 1:
-						inputverified = """
-						insert into alatverified values (null, '%d', '%s', '%d')
-						"""
-						execute_querry(connection, inputverified %(user_id, datenow, masker))
-						print("Anda bisa masuk")
+			resultsRole = getRole(connection, role %email)
+			for role in resultsRole:
+				if role == None:
+					print("User id Tidak ada")
+				elif role == 'security':
+					print("Anda masuk dengan akun security")
+				else:
+					getuser_id = """
+					select user_id from user where email = '%s'
+					"""
+					resultsID = getUserID(connection, getuser_id %email)
+					for user_id in resultsID:
+						masker = int(input("Apakah anda memakai masker : "))
+						if masker == 1:
+							inputverified = """
+							insert into alatverified values (null, '%d', '%s', '%d')
+							"""
+							execute_querry(connection, inputverified %(user_id, datenow, masker))
+							print("Anda bisa dengan akun user")
 
-						# inputdataharian = """
-						# select scan_id from verifiedmasker where user_id = '%s'
-						# """
-						# getVerID = getVerifiedID(connection, inputdataharian %user_id)
-						# for verID in getVerID:
-						# 	print("Berikut adalah ver id anda :", verID)
-							
-					else:
-						print("Anda tidak bisa masuk!")
+							# inputdataharian = """
+							# select scan_id from verifiedmasker where user_id = '%s'
+							# """
+							# getVerID = getVerifiedID(connection, inputdataharian %user_id)
+							# for verID in getVerID:
+							# 	print("Berikut adalah ver id anda :", verID)
+								
+						else:
+							print("Anda tidak bisa masuk!")
+					
 
+	def getUserID(connection, querry):
+		cursor = connection.cursor()
+		try:
+			cursor.execute(querry)
+			result = cursor.fetchone()
+			return result
+		except Error as err:
+			print(f"Error : '{err}'") 
 
+	def getVerifiedID(connection, querry):
+		cursor = connection.cursor()
+		try:
+			cursor.execute(querry)
+			result = cursor.fetchone()
+			return result
+		except Error as err:
+			print(f"Error : '{err}'")
+
+	def getRole(connection, querry):
+		cursor = connection.cursor()
+		try:
+			cursor.execute(querry)
+			result = cursor.fetchone()
+			return result
+		except Error as err:
+			print(f"Error : '{err}'")
 
 	def get_namadepan(self):
 		return self.__namadepan

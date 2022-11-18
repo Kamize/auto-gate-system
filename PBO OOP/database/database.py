@@ -73,3 +73,12 @@ def getVerifiedID(connection, querry):
         return result
     except Error as err:
         print(f"Error : '{err}'")
+
+def getRole(connection, querry):
+    cursor = connection.cursor()
+    try:
+        cursor.execute(querry)
+        result = cursor.fetchone()
+        return result
+    except Error as err:
+        print(f"Error : '{err}'")

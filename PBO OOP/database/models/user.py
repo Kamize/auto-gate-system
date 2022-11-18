@@ -14,7 +14,8 @@ create_user_table = """
 	nomor_telepon int not null,
 	email varchar(50) not null,
 	username varchar(50) not null,
-	password varchar(50) not null
+	password varchar(50) not null,
+	role char(1) not null,
 	)
 	"""
 # connection = create_db_connection("localhost", "root", pw, db)
