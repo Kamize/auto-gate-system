@@ -3,26 +3,13 @@ from multiprocessing import connection
 from sqlite3 import connect
 import mysql.connector
 from mysql.connector import Error
+import datetime
+from datetime import date
 
-
-from database.database import execute_querry, create_db_connection
+from database.database import execute_querry, create_db_connection, getUserID, getVerifiedID
 from database.secret import pw, db
 
 class User():
-	
-	create_user_table = """
-	CREATE TABLE user(
-	user_id int primary key auto_increment,
-	nama_depan varchar(30) not null,
-	nama_belakang varchar(30) not null,
-	birth_date date,
-	gender boolean not null,
-	nomor_telepon int not null,
-	email varchar(50) not null,
-	username varchar(50) not null,
-	password varchar(50) not null
-	)
-	"""
 	
 	def __init__(self, namadepan, namabelakang, birthdate, gender, nomortelepon, email, username, password):
 		self.__namadepan = namadepan
@@ -45,6 +32,57 @@ class User():
 		passworduser = password
 		connection = create_db_connection("localhost", "root", pw, db)
 		execute_querry(connection, "INSERT INTO user VALUES(null, '%s', '%s', '%s', %r, NULL, %s, '%s', '%s', '%s')" %(nama_depan, nama_belakang, birth_date, gender1, nomor_telepon, emailuser, usernameuser, passworduser))
+
+	# def getUserID(connection, querry):
+	# 	cursor = connection.cursor()
+	# 	try:
+	# 		cursor.execute(querry)
+	# 		result = cursor.fetchone()
+	# 		return result
+	# 	except Error as err:
+	# 		print(f"Error : '{err}'") 
+
+	def userLogin(email, password):
+		datenow = datetime.datetime.now()
+		connection = create_db_connection("localhost", "root", pw, db)
+
+		emailuser = email
+		passworduser = password
+
+		cursor = connection.cursor()
+		cursor.execute("select email, password from user where email = '%s' and password = '%s'" %(emailuser, passworduser))
+
+		if cursor.fetchone() == None:
+			print("Akun tidak ada")
+		else:
+			print("Berhasil Log-in")
+			id = """
+			select user_id from user where email = '%s'
+			"""
+			results = getUserID(connection, id %emailuser)
+			if results == None:
+				print("User id Tidak ada")
+			else:
+				for user_id in results:
+					masker = int(input("Apakah anda memakai masker : "))
+					if masker == 1:
+						inputverified = """
+						insert into alatverified values (null, '%d', '%s', '%d')
+						"""
+						execute_querry(connection, inputverified %(user_id, datenow, masker))
+						print("Anda bisa masuk")
+
+						# inputdataharian = """
+						# select scan_id from verifiedmasker where user_id = '%s'
+						# """
+						# getVerID = getVerifiedID(connection, inputdataharian %user_id)
+						# for verID in getVerID:
+						# 	print("Berikut adalah ver id anda :", verID)
+							
+					else:
+						print("Anda tidak bisa masuk!")
+
+
 
 	def get_namadepan(self):
 		return self.__namadepan

@@ -55,3 +55,21 @@ def execute_querry(connection, querry):
         print("Query was successfully")
     except Error as err:
         print(f"Error : '{err}'")
+
+def getUserID(connection, querry):
+		cursor = connection.cursor()
+		try:
+			cursor.execute(querry)
+			result = cursor.fetchone()
+			return result
+		except Error as err:
+			print(f"Error : '{err}'") 
+
+def getVerifiedID(connection, querry):
+    cursor = connection.cursor()
+    try:
+        cursor.execute(querry)
+        result = cursor.fetchone()
+        return result
+    except Error as err:
+        print(f"Error : '{err}'")
