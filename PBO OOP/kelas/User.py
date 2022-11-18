@@ -31,7 +31,7 @@ class User():
 		usernameuser = username
 		passworduser = password
 		connection = create_db_connection("localhost", "root", pw, db)
-		execute_querry(connection, "INSERT INTO user VALUES(null, '%s', '%s', '%s', %r, NULL, %s, '%s', '%s', '%s', 'user')" %(nama_depan, nama_belakang, birth_date, gender1, nomor_telepon, emailuser, usernameuser, passworduser))
+		execute_querry(connection, "INSERT INTO user VALUES(null, '%s', '%s', '%s', %r, NULL, %s, '%s', '%s', '%s', 'datascientist')" %(nama_depan, nama_belakang, birth_date, gender1, nomor_telepon, emailuser, usernameuser, passworduser))
 
 
 	def userLogin(email, password):
@@ -55,6 +55,8 @@ class User():
 					print("User id Tidak ada")
 				elif role == 'security':
 					print("Anda masuk dengan akun security")
+				elif role == 'datascientist':
+					print("Anda masuk dengan akun datascientist")
 				else:
 					resultsID = getUserID(connection, email, password)
 					for userid in resultsID:
@@ -64,13 +66,6 @@ class User():
 						"""
 						execute_querry(connection, inputverified %(userid, datenow, masker))
 						print("Anda sudah masuk")
-					# for user_id in resultsID:
-					# 	masker = int(input("Apakah anda memakai masker : "))
-					# 	inputverified = """
-					# 	insert into alatverified values (null, '%d', '%s', '%d')
-					# 	"""
-					# 	execute_querry(connection, inputverified %(user_id, datenow, masker))	
-					# 	print("Anda sudah login")	
 					
 
 	def getUserID(email, password):

@@ -59,11 +59,6 @@ def execute_querry(connection, querry):
 
 connection = create_db_connection("localhost", "root", pw, db)
 
-
-
-
-
-
 def getUserID(connection, email, password):
 		cursor = connection.cursor()
 		try:
