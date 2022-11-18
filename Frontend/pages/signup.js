@@ -16,7 +16,7 @@ export default function SignUp() {
       birthdate: yup.string().required(),
       email: yup.string().email().required(),
       password: yup.string().min(4).max(15).required(),
-      confirmpassword: yup.string().oneOf([yup.ref("password")],null),
+      confirmpassword: yup.string().oneOf([yup.ref("password")],"harus sama"),
       username: yup.string().required(),
     })
     .required();
@@ -154,6 +154,7 @@ export default function SignUp() {
                 />
               </svg>
             </div>
+            <p>{errors.confirmpassword?.message}</p>
           </div>
           <input type="submit" className=" rounded-[20px] border-solid w-full h-[40px] bg-[#2CD5D9] px-[34px] mb-[10px] text-white" value={"next"} />
         </form>

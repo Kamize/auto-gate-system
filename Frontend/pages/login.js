@@ -27,7 +27,7 @@ export default function Login() {
   const router = useRouter()
 
   let videoRef = useRef();
-  let refButton = useRef();
+  let refButton = useRef(null);
   const imgURL = "https://teachablemachine.withgoogle.com/models/f3rdJMbyh/model.json";
 
     let detectInterval;
