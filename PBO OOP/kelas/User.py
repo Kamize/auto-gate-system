@@ -31,7 +31,7 @@ class User():
 		usernameuser = username
 		passworduser = password
 		connection = create_db_connection("localhost", "root", pw, db)
-		execute_querry(connection, "INSERT INTO user VALUES(null, '%s', '%s', '%s', %r, NULL, %s, '%s', '%s', '%s', 'datascientist')" %(nama_depan, nama_belakang, birth_date, gender1, nomor_telepon, emailuser, usernameuser, passworduser))
+		execute_querry(connection, "INSERT INTO user VALUES(null, '%s', '%s', '%s', %r, NULL, %s, '%s', '%s', '%s', 'user')" %(nama_depan, nama_belakang, birth_date, gender1, nomor_telepon, emailuser, usernameuser, passworduser))
 
 
 	def userLogin(email, password):

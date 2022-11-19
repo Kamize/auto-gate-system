@@ -10,8 +10,9 @@ from database.database import execute_querry, create_db_connection, getRole, get
 from database.secret import pw, db
 
 from kelas.DataHarian import DataHarian
+from kelas.User import User
 
-class DataScientist():
+class DataScientist(User):
 	
 	def get_allData():
 

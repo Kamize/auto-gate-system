@@ -9,7 +9,9 @@ from datetime import date
 from database.database import execute_querry, create_db_connection, getRole, getUserID, connection
 from database.secret import pw, db
 
-class Security():
+from kelas.User import User
+
+class Security(User):
 
 	def get_peopleNoMask():
 
