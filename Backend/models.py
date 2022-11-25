@@ -16,6 +16,7 @@ class Users(Base):
     email = Column(String(40), unique=True)
     username = Column(String(40))
     password = Column(String(40))
+    role = Column(String(13))
 
     verified = relationship("AlatVerified", back_populates="pengunjung")
     harian = relationship("DataHarian", back_populates="pengunjungvisitor")
