@@ -1,8 +1,14 @@
-export default function Tables({data}) {
-  // console.log(data)
+export default function Tables() {
+  const seed = [
+    {nama:'opal',umur:8},
+    {nama:'opsal',umur:10},
+    {nama:'opdal',umur:80},
+    {nama:'opafl',umur:82},
+
+]
   return (
     <>
-      <div className="overflow-x-auto relative shadow-md ">
+      <div className="overflow-x-auto relative shadow-md">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -12,29 +18,19 @@ export default function Tables({data}) {
               <th scope="col" className="py-3 px-6">
                 Email
               </th>
-              <th scope="col" className="py-3 px-6">
-                birthdate
-              </th>
-              <th scope="col" className="py-3 px-6">
-                  No Telepon
-                </th>
-              {/* <th scope="col" className="py-3 px-6">
-                <span className="sr-only">Edit</span>
-              </th> */}
+              
             </tr>
           </thead>
           <tbody>
-          {/* data[1].data[0].jumlah */}
-            {data && data.data.map((obj,index) => {
+            {seed.map((data) => {
               return (
-                <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                  <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {obj.namadepan}
-                  </th>
-                  <td className="py-4 px-6">{obj.email}</td>
-                  <td className="py-4 px-6">{obj.birthdate}</td>
-                  <td className="py-4 px-6">{obj.nomor_telepon}</td>
-                </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {data.nama}
+              </th>
+            <td className="py-4 px-6">{data.umur}</td>
+
+            </tr>
               )})}
           </tbody>
         </table>

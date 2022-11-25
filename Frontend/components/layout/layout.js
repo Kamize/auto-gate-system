@@ -1,46 +1,45 @@
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import React from "react";
+import { useState,useEffect } from "react";
 import axios from "axios";
-import { GiHamburgerMenu } from "react-icons/gi";
-import {AiFillHome, AiOutlineTable} from 'react-icons/ai';
+// components
 
-const Layout = ({ children }) => {
-  const [button, setButton] = useState(false);
+import AdminNavbar from "../Navbars/AdminNavbar";
+import Sidebar from "../Sidebar/Sidebar";
+import HeaderStats from "../Headers/HeaderStats";
+import FooterAdmin from "../Footers/FooterAdmin";
 
+export default function Admin({ children, role }) {
+  const [date,setDate] = useState(new Date())
+  const [jumlah,setJumlah] = useState()
+  const [jumlahNoMask,setJumlahNoMask] = useState()
 
+    useEffect(() => {
+      const getData = async () => {
+        const res = await Promise.all([
+          axios.get(`http://127.0.0.1:8000/security/withmask/jumlah/${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`),
+          axios.get(`http://127.0.0.1:8000/security/nomask/jumlah/${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`)
+        ])
+        setJumlah(res[0].data[0].Jumlah)
+        setJumlahNoMask(res[1].data[0].Jumlah)
+        
+      }
+
+      getData()
+
+        
+    },[])
   return (
-    <div className="flex h-screen bg-gray-300">
-      {button && (
-        <aside className=" backdrop-blur-[80px] z-40 bg-[rgb(240, 255, 255)/0.56] w-64 fixed mt-16 h-screen rounded-r-[28px] rounded-br-[28px]">
-          <h1 className=" text-xl font-bold pl-12 py-6">MaskDetection</h1>
-          <Link href={"/admin"}>
-            <div className=" pl-12 py-3 flex items-center gap-4 hover:font-bold hover:transition-all">
-              <AiFillHome />
-              <p className=" cursor-pointer">Dashboard</p>
-            </div>
-          </Link>
-          <Link href={"/admin/tables"}>
-            <div className="pl-12 py-3 flex items-center gap-4 hover:font-bold hover:transition-all">
-              <AiOutlineTable />
-              <p className=" cursor-pointer">Tables</p>
-            </div>
-          </Link>
-        </aside>
-      )}
-      <div className="flex flex-col flex-1">
-        <header className=" h-[70px] bg-[#2CD5D9] py-4">
-          <div className="container flex items-center justify-between h-full px-6 mx-auto bg-slate-500">
-            <p onClick={() => setButton(!button)} className=" cursor-pointer">
-              <GiHamburgerMenu />
-            </p>
-          </div>
-        </header>
-        <main className="h-full pb-16 overflow-y-auto bg-slate-50 ">
-          <div className="px-6 grid bg-slate-500 mx-auto max-w-[1400px]">{children}</div>
-        </main>
+    <div className=" font-[Helvetica]">
+      <Sidebar role={role} />
+      <div className="relative md:ml-64 ">
+        <AdminNavbar role={role} />
+        {/* Header */}
+        <HeaderStats jumlahMask={jumlah} jumlahNoMask={jumlahNoMask}/>
+        <div className="px-4 md:px-10 mx-auto w-full -m-24">
+          {children}
+          <FooterAdmin />
+        </div>
       </div>
     </div>
   );
-};
-
-export default Layout;
+}

@@ -17,21 +17,21 @@ def get_db():
     finally:
         db.close()
 
-@router.get("/users", response_model=List[UserSchema])
+@router.get("/users", response_model=List[UserSchema], tags=["users"])
 async def get_users(db:Session=Depends(get_db)):
     return db.query(Users).all()
 
-@router.get("/users/total")
+@router.get("/users/total", tags=["users"])
 async def get_total_users(db:Session=Depends(get_db)):
     return db.execute("SELECT COUNT(id) as 'jumlah' FROM users").all()
     
 
-@router.get("/users/{id}")
+@router.get("/users/{id}", tags=["users"])
 async def get_users_by_id(id:int, db:Session=Depends(get_db)):
     return db.execute("SELECT * FROM users WHERE id = %s" %id).fetchall()
 
 
-@router.post("/users", response_model=UserSchema)
+@router.post("/users", response_model=UserSchema, tags=["users"])
 def input_users(user: UserSchema, db:Session=Depends(get_db)):
     u = Users(
         namadepan = user.namadepan,
@@ -47,12 +47,8 @@ def input_users(user: UserSchema, db:Session=Depends(get_db)):
     db.commit()
     return u
 
-@router.post("/users/login")
+@router.post("/users/login", tags=["users"])
 async def user_login(login: UserLogin,db:Session=Depends(get_db)):
-    # login = Users(
-    #     email = login.email,
-    #     password = login.password,
-    # )
     role = db.execute("SELECT role FROM users WHERE email = '%s' AND password = '%s'" %(login.email, login.password)).fetchone()
     for hasilrole in role:
         if hasilrole == 'user':
@@ -77,9 +73,9 @@ async def user_login(login: UserLogin,db:Session=Depends(get_db)):
                         else:
                             return "ANDA TIDAK DAPAT MASUK"
         elif hasilrole == 'security':
-            return "security"
+            return {"role": "security"}
         elif hasilrole == 'datascientist':
-            return "datascientist"
+            return {"role": "datascientist"}
         elif hasilrole == None:
             return "Akun Tidak Ada"
 
