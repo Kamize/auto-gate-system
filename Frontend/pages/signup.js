@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
+import { IoCaretBack } from 'react-icons/io5' 
 
 export default function SignUp() {
   const schema = yup
@@ -32,6 +33,11 @@ export default function SignUp() {
   const router = useRouter()
 
   return (
+    <div>
+    <div className=" flex items-center relative z-30 IoCaretBack cursor-pointer" onClick={() => router.push("/login")}>
+      <IoCaretBack size={50}/>
+      <p>Back To Login</p>
+    </div>
     <section className=" flex items-center justify-center absolute left-0 right-0 top-0 bottom-0 ">
       <div className=" w-[300px]">
         <form
@@ -160,5 +166,6 @@ export default function SignUp() {
         </form>
       </div>
     </section>
+    </div>
   );
 }

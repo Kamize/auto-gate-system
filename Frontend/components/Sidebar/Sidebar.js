@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import UserDropdown from "../Dropdowns/UserDropdown.js";
 import { FiSettings } from "react-icons/fi";
 import { AiOutlineTable } from "react-icons/ai";
+import {CgLogOut} from "react-icons/cg"
 
 export default function Sidebar({ role }) {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
@@ -118,27 +119,26 @@ export default function Sidebar({ role }) {
                     </a>
                   </Link>
                 </li>
+                <li className="items-center">
+                  <Link href="/admin/tableMonth">
+                    <a className={"text-xs uppercase py-3 font-bold flex items-center gap-2  " + (router.pathname.indexOf("/admin/tableMonth") !== -1 ? "text-scDark hover:text-black" : "text-black hover:text-black")}>
+                      <AiOutlineTable size={"20"} />
+                      Tables By Month
+                    </a>
+                  </Link>
+                </li>
               </ul>
 
               {/* Divider */}
               <hr className="my-4 md:min-w-full" />
               {/* Heading */}
-              <h6 className="md:min-w-full text-black text-xs uppercase font-bold block pt-1 pb-4 no-underline">Auth Layout Pages</h6>
               {/* Navigation */}
 
               <ul className="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
                 <li className="items-center">
                   <Link href="/auth/login">
-                    <a className="text-black hover:text-black text-xs uppercase py-3 font-bold block">
-                      <i className="fas fa-fingerprint text-black mr-2 text-sm"></i> Login
-                    </a>
-                  </Link>
-                </li>
-
-                <li className="items-center">
-                  <Link href="/auth/register">
-                    <a className="text-black hover:text-black text-xs uppercase py-3 font-bold block">
-                      <i className="fas fa-clipboard-list text-black mr-2 text-sm"></i> Register
+                    <a className="text-black hover:text-black text-xs uppercase py-3 font-bold block flex items-center">
+                      <CgLogOut size={20} /> Logout
                     </a>
                   </Link>
                 </li>
@@ -265,6 +265,17 @@ export default function Sidebar({ role }) {
 
             <ul className="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
               <li className="items-center">
+                <Link href="/login">
+                  <a className="text-black hover:text-black text-xs uppercase py-3 font-bold block flex items-center">
+                    <CgLogOut size={20
+                    
+                    } /> Logout
+                  </a>
+                </Link>
+              </li>
+            </ul>
+            {/* <ul className="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
+              <li className="items-center">
                 <Link href="/auth/login">
                   <a className="text-black hover:text-black text-xs uppercase py-3 font-bold block">
                     <i className="fas fa-fingerprint text-black mr-2 text-sm"></i> Login
@@ -279,7 +290,7 @@ export default function Sidebar({ role }) {
                   </a>
                 </Link>
               </li>
-            </ul>
+            </ul> */}
           </div>
         </div>
       </nav>

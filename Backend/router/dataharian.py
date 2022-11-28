@@ -18,18 +18,18 @@ def get_db():
 async def get_dataharian(db:Session=Depends(get_db)):
     return db.execute("SELECT dataharian.dataharian_id, users.namadepan, users.namabelakang, users.email, dataharian.input_at FROM users INNER JOIN dataharian ON users.id = dataharian.user_id").fetchall()
 
-@router.post("/dataharian/{tanggal}", tags=["dataharian"])
+@router.get("/dataharian/{tanggal}", tags=["dataharian"])
 async def get_dataharian(tanggal,db:Session=Depends(get_db)):
     return db.execute("SELECT dataharian.dataharian_id, users.namadepan, users.namabelakang, users.email, dataharian.input_at FROM users INNER JOIN dataharian ON users.id = dataharian.user_id WHERE dataharian.input_at = '%s';" %tanggal).fetchall()
     
-@router.post("/dataharian/{bulan}/{tahun}", tags=["dataharian"])
+@router.get("/dataharian/{bulan}/{tahun}", tags=["dataharian"])
 async def get_dataharian(bulan :int, tahun :int,db:Session=Depends(get_db)):
     return db.execute("SELECT dataharian.dataharian_id, users.namadepan, users.namabelakang, users.email, dataharian.input_at FROM users INNER JOIN dataharian ON users.id = dataharian.user_id WHERE input_at BETWEEN '%d-%d-01' AND '%d-%d-01' ORDER BY dataharian.input_at ASC" %(tahun, bulan, tahun, bulan+1)).fetchall()
 
-@router.post("/dataharian/{tanggal}/jumlah", tags=["dataharian"])
+@router.get("/dataharian/{tanggal}/jumlah", tags=["dataharian"])
 async def get_dataharian(tanggal, db:Session=Depends(get_db)):
     return db.execute("SELECT COUNT(user_id) as 'Jumlah' FROM dataharian WHERE input_at = '%s'" %tanggal).fetchall()
 
-@router.post("/dataharian/{bulan}/{tahun}/jumlah", tags=["dataharian"])
+@router.get("/dataharian/{bulan}/{tahun}/jumlah", tags=["dataharian"])
 async def get_dataharian(bulan :int, tahun :int,db:Session=Depends(get_db)):
     return db.execute("SELECT COUNT(dataharian.dataharian_id) as 'Jumlah' FROM users INNER JOIN dataharian ON users.id = dataharian.user_id WHERE input_at BETWEEN '%d-%d-01' AND '%d-%d-01' ORDER BY dataharian.input_at ASC" %(tahun, bulan, tahun, bulan+1)).fetchall()

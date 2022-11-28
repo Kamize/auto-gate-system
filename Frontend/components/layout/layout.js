@@ -8,7 +8,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import HeaderStats from "../Headers/HeaderStats";
 import FooterAdmin from "../Footers/FooterAdmin";
 
-export default function Admin({ children, role }) {
+export default function Admin({ children, role,allUser, jumlahMonth, cardMonth }) {
   const [date,setDate] = useState(new Date())
   const [jumlah,setJumlah] = useState()
   const [jumlahNoMask,setJumlahNoMask] = useState()
@@ -34,7 +34,10 @@ export default function Admin({ children, role }) {
       <div className="relative md:ml-64 ">
         <AdminNavbar role={role} />
         {/* Header */}
-        <HeaderStats jumlahMask={jumlah} jumlahNoMask={jumlahNoMask}/>
+        { role === "security"?
+         <HeaderStats jumlahMask={jumlah} jumlahNoMask={jumlahNoMask} role={role}  />:
+         <HeaderStats  role={role} allUser={allUser} jumlahMonth={jumlahMonth} cardMonth={cardMonth}/>
+        }
         <div className="px-4 md:px-10 mx-auto w-full -m-24">
           {children}
           <FooterAdmin />

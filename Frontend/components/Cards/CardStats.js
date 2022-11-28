@@ -3,8 +3,6 @@ import React from "react";
 export default function CardStats({
   statSubtitle,
   statTitle,
-  statIconName,
-  statIconColor,
 }) {
   return (
     <>
@@ -16,7 +14,7 @@ export default function CardStats({
                 {statSubtitle}
               </h5>
               <span className="font-semibold text-xl text-blueGray-700">
-                {statTitle}
+                {statTitle === ""?0:statTitle}
               </span>
             </div>
             <div className="relative w-auto pl-4 flex-initial">
@@ -25,7 +23,6 @@ export default function CardStats({
                   "text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-pmLight "
                 }
               >
-                <i className={statIconName}></i>
               </div>
             </div>
           </div>

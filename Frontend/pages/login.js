@@ -27,7 +27,7 @@ export default function Login() {
   const router = useRouter()
 
   let videoRef = useRef();
-  let refButton = useRef(null);
+  let refButton = useRef(undefined);
   const imgURL = "https://teachablemachine.withgoogle.com/models/f3rdJMbyh/model.json";
 
     let detectInterval;
@@ -35,11 +35,15 @@ export default function Login() {
       const ml5 = require("ml5");
       const modelLoaded = () => {
       console.log('model ready')
-      refButton.current.onclick = () => {
-            // videoRef.current.video
-            detect()
-          }
-        };
+      if(refButton.current != null){
+
+        refButton.current.onclick = () => {
+          // videoRef.current.video
+          detect()
+        }
+      }
+      }
+
         const classifier = ml5.imageClassifier(imgURL, modelLoaded);
 
     const detect = () => {
@@ -74,6 +78,7 @@ export default function Login() {
             <div className="mb-6">
               <Webcam ref={videoRef} mirrored={true} width={100+"%"} style={{ display: "block" }} audio={false} video={"true"} />
               <button ref={refButton} className=" font-bold text-center w-full">CLASSIFY</button>
+              <p className="text-center">{result}</p>
             </div>
             <form
               id="form1"
@@ -92,7 +97,7 @@ export default function Login() {
               </div>
               <div className="relative mb-[14px]">
                 <p className=" text-[12px] absolute -top-[10px] left-[26px] px-1 bg-white">Password</p>
-                <input {...register("password")} className=" rounded-[20px] border border-solid w-full h-[40px] border-[#6E7076] px-[34px] mb-[10px]" />
+                <input {...register("password")} type={'password'} className=" rounded-[20px] border border-solid w-full h-[40px] border-[#6E7076] px-[34px] mb-[10px]" />
                 <p>{errors.password?.message}</p>
               </div>
               {/* <Link href={"/admin/tables"}> */}
