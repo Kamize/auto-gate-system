@@ -25,10 +25,8 @@ export default function CardTable({data}) {
                 <option value="10">10</option>
                 <option value="15">15</option>
               </select>
-              <ExportExcel excelData={data} fileName={"exportExcel"} />
+              {/* {export && <ExportExcel excelData={data} fileName={"exportExcel"} />} */}
             </div>
-            {/* <div className="relative w-full px-4 max-w-full ">
-            </div> */}
           </div>
         </div>
         <div className="block w-full overflow-x-auto">

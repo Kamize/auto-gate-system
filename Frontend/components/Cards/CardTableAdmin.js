@@ -2,10 +2,6 @@ import React, { useState } from "react";
 import ExportExcel from "../exportExcel";
 import { useRef } from "react";
 
-// components
-
-import TableDropdown from "../Dropdowns/TableDropdown";
-
 export default function CardTableAdmin({data,typeMonth, dataMonth}) {
   const select = useRef();
   const [selectValue, setSelectValue] = useState("");

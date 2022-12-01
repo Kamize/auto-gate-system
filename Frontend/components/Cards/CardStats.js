@@ -3,6 +3,7 @@ import React from "react";
 export default function CardStats({
   statSubtitle,
   statTitle,
+  statDate
 }) {
   return (
     <>

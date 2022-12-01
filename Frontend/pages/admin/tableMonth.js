@@ -6,22 +6,22 @@ import axios from "axios"
 import Admin from "../../components/layout/layout";
 import CardTableAdmin from "../../components/Cards/CardTableAdmin";
 
-export default function Tables() {
-  const [data,setData] = useState("")
+export default function Tables({data}) {
+  // const [data,setData] = useState("")
   const [jumlahMonth,setJumlahMonth] = useState("")
   const [dataMonth, setDataMonth] = useState("")
   const DataMonth = (data) => {
     setDataMonth(data)
   }
 
-    useEffect(() => {
-        axios.get("http://127.0.0.1:8000/dataharian")
-        .then(data => setData(data.data))
-        .catch(e => console.log(e))
-    },[])
+  //   useEffect(() => {
+  //       axios.get("https://autogatesystem.herokuapp.com/dataharian")
+  //       .then(data => setData(data.data))
+  //       .catch(e => console.log(e))
+  //   },[])
     useEffect(() => {
       if(dataMonth != ""){
-        axios.get("http://127.0.0.1:8000/dataharian/"+dataMonth[1]+"/"+dataMonth[0]+"/jumlah")
+        axios.get("https://autogatesystem.herokuapp.com/dataharian/"+dataMonth[1]+"/"+dataMonth[0]+"/jumlah")
         .then(data => setJumlahMonth(data.data[0].Jumlah))
         .catch(e => console.log(e))
       }
@@ -36,5 +36,17 @@ export default function Tables() {
       </div>
     </Admin>
   );
+}
+
+export async function getServerSideProps(){
+
+  const res = await axios.get("https://autogatesystem.herokuapp.com/dataharian")
+  const data = res.data
+
+  return {
+      props: {
+          data
+      }
+  }
 }
 

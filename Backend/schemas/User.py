@@ -9,6 +9,7 @@ class UserSchema(BaseModel):
     email:str
     username:str
     password:str
+    
     class Config:
         orm_mode=True
         

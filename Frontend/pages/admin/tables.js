@@ -6,13 +6,13 @@ import axios from "axios"
 import Admin from "../../components/layout/layout";
 import CardTableAdmin from "../../components/Cards/CardTableAdmin";
 
-export default function Tables() {
-  const [data,setData] = useState("")
-    useEffect(() => {
-        axios.get("http://127.0.0.1:8000/dataharian")
-        .then(data => setData(data.data))
-        .catch(e => console.log(e))
-    },[])
+export default function Tables({data}) {
+  // const [data,setData] = useState("")
+  //   useEffect(() => {
+  //       axios.get("https://autogatesystem.herokuapp.com/dataharian")
+  //       .then(data => setData(data.data))
+  //       .catch(e => console.log(e))
+  //   },[])
     
   return (
     <Admin role={"admin"} allUser={data.length} cardMonth={false} >
@@ -24,4 +24,18 @@ export default function Tables() {
     </Admin>
   );
 }
+
+export async function getServerSideProps(){
+
+  const res = await axios.get("https://autogatesystem.herokuapp.com/dataharian")
+  const data = res.data
+
+  return {
+      props: {
+          data
+      }
+  }
+}
+
+
 

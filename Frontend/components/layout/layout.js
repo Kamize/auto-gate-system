@@ -10,14 +10,14 @@ import FooterAdmin from "../Footers/FooterAdmin";
 
 export default function Admin({ children, role,allUser, jumlahMonth, cardMonth }) {
   const [date,setDate] = useState(new Date())
-  const [jumlah,setJumlah] = useState()
-  const [jumlahNoMask,setJumlahNoMask] = useState()
+  const [jumlah,setJumlah] = useState(0)
+  const [jumlahNoMask,setJumlahNoMask] = useState(0)
 
     useEffect(() => {
       const getData = async () => {
         const res = await Promise.all([
-          axios.get(`http://127.0.0.1:8000/security/withmask/jumlah/${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`),
-          axios.get(`http://127.0.0.1:8000/security/nomask/jumlah/${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`)
+          axios.get(`https://autogatesystem.herokuapp.com/security/withmask/jumlah/${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`),
+          axios.get(`https://autogatesystem.herokuapp.com/security/nomask/jumlah/${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`)
         ])
         setJumlah(res[0].data[0].Jumlah)
         setJumlahNoMask(res[1].data[0].Jumlah)
@@ -46,3 +46,21 @@ export default function Admin({ children, role,allUser, jumlahMonth, cardMonth }
     </div>
   );
 }
+
+// export async function getServerSideProps(){
+//   const date= new Date()
+  
+//   const res = await Promise.all([
+//             axios.get(`https://autogatesystem.herokuapp.com/security/withmask/jumlah/${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`),
+//             axios.get(`https://autogatesystem.herokuapp.com/security/nomask/jumlah/${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`)
+//           ])
+//   const jumlah = res[0].data[0].Jumlah
+//   const jumlahNoMask = res[1].data[0].Jumlah
+
+//   return {
+//       props: {
+//           jumlah,
+//           jumlahNoMask
+//       }
+//   }
+// }

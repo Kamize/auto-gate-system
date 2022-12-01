@@ -42,6 +42,7 @@ export default function HeaderStats({jumlahMask,jumlahNoMask,role, allUser, juml
                  <CardStats
                    statSubtitle="Jumlah User"
                    statTitle={allUser}
+                   statDate = {false}
                    />
                </div>
                {cardMonth &&
@@ -49,6 +50,7 @@ export default function HeaderStats({jumlahMask,jumlahNoMask,role, allUser, juml
                  <CardStats
                    statSubtitle="Jumlah User By Month"
                    statTitle={jumlahMonth}
+                   statDate = {false}
                    />
                </div>
                   }

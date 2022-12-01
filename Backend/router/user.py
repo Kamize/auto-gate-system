@@ -6,7 +6,6 @@ from typing import List
 from schemas.User import UserSchema
 from schemas.Login import UserLogin
 import datetime
-from datetime import *
 
 
 router = APIRouter()
@@ -42,7 +41,8 @@ def input_users(user: UserSchema, db:Session=Depends(get_db)):
         nomor_telepon = user.nomor_telepon,
         email = user.email,
         username = user.username,
-        password = user.password
+        password = user.password,
+        role = "user"
     )
     db.add(u)
     db.commit()
