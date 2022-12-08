@@ -1,6 +1,4 @@
 import React from "react";
-import { AiOutlineSearch } from "react-icons/ai";
-import UserDropdown from "../Dropdowns/UserDropdown.js";
 
 export default function Navbar({role}) {
   return (

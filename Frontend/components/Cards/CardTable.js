@@ -1,10 +1,6 @@
-import React, { useState } from "react";
-import ExportExcel from "../exportExcel";
-import { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 // components
-
-import TableDropdown from "../Dropdowns/TableDropdown";
 
 export default function CardTable({data}) {
   const select = useRef();
@@ -25,7 +21,6 @@ export default function CardTable({data}) {
                 <option value="10">10</option>
                 <option value="15">15</option>
               </select>
-              {/* {export && <ExportExcel excelData={data} fileName={"exportExcel"} />} */}
             </div>
           </div>
         </div>
@@ -40,7 +35,6 @@ export default function CardTable({data}) {
                 <th className={"px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left "}>User Scan id</th>
                 <th className={"px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left "}>Masker</th>
                 <th className={"px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left "}>Date User</th>
-                <th className={"px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left "}></th>
               </tr>
             </thead>
             <tbody>
@@ -56,9 +50,6 @@ export default function CardTable({data}) {
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{data.scan_id}</td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{data.masker == "1"?"True":"False"}</td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{data.login_at}</td>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                        <TableDropdown />
-                      </td>
                     </tr>
                   );
                 })}

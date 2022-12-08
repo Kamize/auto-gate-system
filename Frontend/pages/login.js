@@ -5,9 +5,9 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Webcam from "react-webcam";
 import { useEffect } from "react";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Link from "next/link";
-import { env } from "../next.config";
+
 
 export default function Login() {
   const schema = yup
@@ -83,7 +83,7 @@ export default function Login() {
             <form
               id="form1"
               onSubmit={handleSubmit(async (d) => {
-                const res = await axios.post("https://autogatesystem.herokuapp.com/users/login",{...d,masker:boolMask})
+                const res = await axios.post("https://web-production-7522.up.railway.app/users/login",{...d,masker:boolMask})
                 console.log(res.status)
                 if(boolMask){
                   alert("Gate is Open")
